@@ -1,111 +1,110 @@
-import java.util.Scanner;
+import java.lang.Math;
+import java.util.*;
+
 public class Main{
-    public static void liczbyPodzielne(int m, int n){
-        m--;
-        if(m<=0) return;
-        for(int i=(int)Math.pow(10,m); i<(int)Math.pow(10,m+1); i++) if(i%n==0) System.out.print(i+" ");
+    public static double[] generujZakres(int n, int minWartosc, int maxWartosc){
+        double[] tab = new double[n];
+        double skok = (maxWartosc-minWartosc)/(n-1.0);
+        tab[0]=minWartosc;
+        for(int i=1; i<tab.length; i++) tab[i]=tab[i-1]+skok;
+        return tab;
     }
-    public static void piramida(int n, boolean variant){ //wip variant
-        for(int i=0; i<n; i++){
-            for(int j=0; j<i+1; j++) System.out.print("*");
+    public static double[] funkcjaSignum(double[] tab){
+        for(int i=0; i<tab.length; i++){
+            if(tab[i]>0) tab[i]=1;
+            else if (tab[i]<0) tab[i]=-1;
+            else if (tab[i]==0) tab[i]=0;
+        }
+        return tab;
+    }
+    public static double[] funkcjaWykladnicza(double[] tab, double a){
+        for(int i=0; i<tab.length; i++) tab[i]=Math.pow(a, tab[i]);
+        return tab;
+    }
+    public static double[] funkcjaKwadratowa(double[] tab, double a, double b, double c){
+        for(int i=0; i<tab.length; i++) tab[i]=a*Math.pow(tab[i],2)+b*tab[i]+c;
+        return tab;
+    }
+    public static double[] funkcjaLiniowa(double[] tab, double a, double b){
+        for(int i=0; i<tab.length; i++) tab[i]=a*tab[i]+b;
+        return tab;
+    }
+    public static double sredniaGeometryczna(int[] tab){
+        double sum = 1;
+        for(int i=0; i<tab.length; i++) sum*=tab[i];
+        return Math.pow(sum, 1.0/tab.length);
+    }
+    public static double sredniaArytmetyczna(int[] tab){
+        double sum = 0;
+        for(int i=0; i<tab.length; i++) sum+=tab[i];
+        return sum/tab.length;
+    }
+    public static int sumaUjemnych(int[] tab){
+        int counter = 0;
+        for(int i=0; i<tab.length; i++) if(tab[i]<0) counter+=tab[i];
+        return counter;
+    }
+    public static int sumaDodatnich(int[] tab){
+        int counter = 0;
+        for(int i=0; i<tab.length; i++) if(tab[i]>0) counter+=tab[i];
+        return counter;
+    }
+    public static int ileMinimalnych(int[] tab){
+        int minValue = tab[0], counter = 0;
+        for(int i=1; i<tab.length; i++) if(tab[i]<minValue) minValue=tab[i];
+        for(int i=0; i<tab.length; i++) if(tab[i]==minValue) counter++;
+        return counter;
+    }
+    public static int ileMaxymalnych(int[] tab){
+        int maxValue = tab[0], counter = 0;
+        for(int i=1; i<tab.length; i++) if(tab[i]>maxValue) maxValue=tab[i];
+        for(int i=0; i<tab.length; i++) if(tab[i]==maxValue) counter++;
+        return counter;
+    }
+    public static int ileZerowych(int[] tab){
+        int counter = 0;
+        for(int i=0; i<tab.length; i++) if(tab[i]==0) counter++;
+        return counter;
+    }
+    public static int ileUjemnych(int[] tab){
+        int counter = 0;
+        for(int i=0; i<tab.length; i++) if(tab[i]<0) counter++;
+        return counter;
+    }
+    public static int ileDodatnich(int[] tab){
+        int counter = 0;
+        for(int i=0; i<tab.length; i++) if(tab[i]>0) counter++;
+        return counter;
+    }
+    public static int ileParzystych(int[] tab){
+        int counter = 0;
+        for(int i=0; i<tab.length; i++) if(tab[i]%2==0) counter++;
+        return counter;
+    }
+    public static int ileNieparzystych(int[] tab){
+        int counter = 0;
+        for(int i=0; i<tab.length; i++) if(tab[i]%2==1) counter++;
+        return counter;
+    }
+    public static void wypiszTablice(int[] tab, int n, int m){
+        int counter = 0;
+        for(int j=0; j<m; j++){
+            for(int i=0; i<n; i++){
+                if(counter>tab.length-1) System.out.print(0+" ");
+                else System.out.print(tab[counter]+" ");
+                counter++;
+            }
             System.out.println("");
         }
     }
-    public static int silnia(int n){
-        int x=1;
-        for(int i=1; i<=n; i++) x*=i;
-        return x;
+    public static int[] generujTablice(int n, int minWartosc, int maxWartosc){
+        int[] tab = new int[n];
+        for(int i=0; i<tab.length; i++) tab[i] = (int)(Math.random() * (maxWartosc - minWartosc + 1)) + minWartosc;
+        return tab;
     }
-    public static int silniaPodwojna(int n){
-        int x=1;
-        for(int i=1; i<=n; i+=2){
-            if(n%2==0&&i==1) continue;
-            x=x*i;
-        }
-        return x;
-    }
-    public static int dwumianNewtona(int n, int k){
-        return silnia(n)/(silnia(k)*silnia(n-k));
-    }
-    public static void ciagFibonacciego(int n){
-        int a=0, b=1, c=1, temp;
-        for(int i=0; i<n; i++){
-            System.out.print(a+" ");
-            temp=b+c;
-            a=b;
-            b=c;
-            c=temp;
-        }
-    }
-    public static int sumaNaturalnych(int n){
-        int x=0;
-        for(int i=0; i<n; i++) x=x+i;
-        return x;
-    }
-    public static int sumaKwaNaturalnych(int n){
-        int x=0;
-        if(n<=0) return 0;
-        for(int i=1; i<=n; i++) x+=Math.pow(i,2);
-        return x;
-    }
-    public static int sumaSzeNaturalnych(int n){
-        int x=0;
-        if(n<=0) return 0;
-        for(int i=1; i<=n; i++) x+=Math.pow(i,3);
-        return x;
-    }
-    public static double sumaOdwNaturalnych(int n){
-        double x=0;
-        if(n<=0) return 0;
-        for(int i=1; i<=n; i++) x+=1/x;
-        return x;
-    }
-    public static void trojkatPascala(int n){
-        for(int i=0; i<n; i++){
-            for(int j=0; j<i; j++) System.out.print(dwumianNewtona(i,j)+" ");
-            System.out.println("");
-        }
-    }
-    public static boolean czyDoskonala(int n){
-        int x=0;
-        if(n<=0) return false;
-        for(int i=1; i<n; i++) if(n%i==0) x+=i;
-        if(x==n) return true;
-        return false;
-    }
-    public static boolean czyPierwsza(int n){
-        if(n==0||n==1) return false;
-        for(int i=2; i<n; i++) if(n%i==0) return false;
-        return true;
-    }
-    public static int NWD(int a, int b){ //wip
-        int temp;
-        if(a==b) return a;
-        if(a>b){
-            temp=b;
-            b=a;
-            a=temp;
-        }
-        for(int i=b; i>1; i--) if(a%i==0&&b%i==0) return i;
-        return 1;
-    }
-    //public static int[] wczytajTablice(int n){ //wip
-    //}
-    public static void main(String[] args) {
-        int n=7, k=3;
-        //liczbyPodzielne(k,n);
-        piramida(n,true);
-        //System.out.println(silnia(n));
-        //System.out.println(silniaPodwojna(n));
-        //System.out.println(dwumianNewtona(n,k));
-        //ciagFibonacciego(n);
-        //System.out.println(sumaNaturalnych(n));
-        //System.out.println(sumaKwaNaturalnych(n));
-        //System.out.println(sumaSzeNaturalnych(n));
-        //System.out.println(sumaOdwNaturalnych(n));
-        //trojkatPascala(n);
-        //System.out.println(czyDoskonala(n));
-        //System.out.println(czyPierwsza(n));
-        //System.out.println(NWD(n,k));
+    public static void main(String[] args){
+        int[] tab = generujTablice(10, 10, 99);
+        double[] taba = generujZakres(7, 5, 20);
+        for(int i=0; i<taba.length; i++) System.out.println(taba[i]);
     }
 }
